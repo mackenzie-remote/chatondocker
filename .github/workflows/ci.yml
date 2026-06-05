@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    name: Pull-request checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Rust toolchain
+        uses: actions/setup-rust@v1
+        with:
+          toolchain: 1.95.0
+          components: clippy, rustfmt
+          profile: minimal
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache Cargo registry and build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit --version 0.17.5 --locked
+
+      - name: Install Markdown lint
+        run: npm install -g markdownlint-cli@0.40.0
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Run tests
+        run: cargo test --all
+
+      - name: Audit dependencies
+        run: cargo audit
+
+      - name: Lint Markdown
+        run: markdownlint "**/*.md"
+
+  publish:
+    name: Publish release image
+    needs: check
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v5
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/chatondocker:${{ github.ref_name }}
+            ghcr.io/${{ github.repository_owner }}/chatondocker:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
