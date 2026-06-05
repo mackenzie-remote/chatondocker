@@ -45,7 +45,7 @@ jobs:
             ${{ runner.os }}-cargo-
 
       - name: Install cargo-audit
-        run: cargo install cargo-audit --version 0.17.5 --locked
+        run: cargo install cargo-audit --version 0.18.3 --locked
 
       - name: Install Markdown lint
         run: npm install -g markdownlint-cli@0.40.0
