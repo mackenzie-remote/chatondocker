@@ -1,0 +1,9 @@
+# Clippy configuration.
+# See https://doc.rust-lang.org/clippy/lint_configuration.html
+
+# Relax panic-prone lints in test code only.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-indexing-slicing-in-tests = true
+allow-panic-in-tests = true
+allow-print-in-tests = true

@@ -1,0 +1,19 @@
+# Example configuration. Copy to config.yaml and adjust as needed.
+#
+# These values can be overridden at run time by environment variables:
+#   APP_HOST, APP_PORT, APP_LOG_LEVEL, DATABASE_URL
+
+server:
+  host: "0.0.0.0"
+  port: 3000
+  environment: development # development, staging, production
+
+monitoring:
+  log_level: "info" # trace, debug, info, warn, error
+
+database:
+  # The connection string is injected at deploy time via the
+  # DATABASE_URL environment variable, sourced from a secret. Leave it
+  # empty here and never commit real credentials.
+  url: ""
+  max_connections: 5

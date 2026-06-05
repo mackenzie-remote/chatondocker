@@ -1,0 +1,39 @@
+# Rust
+target/
+**/*.rs.bk
+*.pdb
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config files (candidates should add example configs)
+config.yaml
+config.toml
+*.env
+
+# But include example configs
+!config.example.yaml
+!config.example.toml
+
+# Coverage reports
+tarpaulin-report.html
+cobertura.xml
+coverage/
+
+# Release artifacts
+dist/
+releases/
+
+# AI agent files
+.cursor/
+.agents/
+AGENTS.md
+CLAUDE.md

@@ -1,0 +1,60 @@
+[package]
+name = "status-service"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+axum = "0.7"
+clap = { version = "4.5", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9"
+sqlx = { version = "0.8", default-features = false, features = ["postgres", "runtime-tokio"] }
+thiserror = "1.0"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[dev-dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+serde_json = "1.0"
+tower = { version = "0.4", features = ["util"] }
+
+[lints.clippy]
+# Deny broad groups at low priority so specific lints can override them.
+all = { level = "deny", priority = -1 }
+perf = { level = "deny", priority = -1 }
+pedantic = { level = "deny", priority = -1 }
+cargo = { level = "deny", priority = -1 }
+
+# Selected restriction lints (opt-in; restriction is not a group).
+absolute_paths = "deny"
+allow_attributes = "deny"
+arithmetic_side_effects = "deny"
+as_conversions = "deny"
+clone_on_ref_ptr = "deny"
+expect_used = "deny"
+indexing_slicing = "deny"
+integer_division = "deny"
+mem_forget = "deny"
+panic = "deny"
+str_to_string = "deny"
+unseparated_literal_suffix = "deny"
+unwrap_used = "deny"
+unused_result_ok = "deny"
+wildcard_enum_match_arm = "deny"
+
+# Allow lints that are noisy or irrelevant for a small std-only service.
+cargo_common_metadata = "allow"
+exhaustive_enums = "allow"
+exhaustive_structs = "allow"
+implicit_return = "allow"
+min_ident_chars = "allow"
+missing_docs_in_private_items = "allow"
+missing_inline_in_public_items = "allow"
+module_name_repetitions = "allow"
+multiple_crate_versions = "allow"
+pub_use = "allow"
+question_mark_used = "allow"
+self_named_module_files = "allow"
+single_call_fn = "allow"

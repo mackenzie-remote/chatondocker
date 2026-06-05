@@ -1,0 +1,29 @@
+# markdownlint config -- enforces the project documentation standard.
+# See .cursor/rules/md-documentation.mdc
+
+default: true
+
+# Max 79 characters per line for prose. Code blocks and tables are
+# exempt (wrapping would break them); URLs are kept on one line.
+MD013:
+  line_length: 79
+  code_blocks: false
+  tables: false
+  headings: true
+
+# ATX-style headings (## Heading).
+MD003:
+  style: atx
+
+# Unordered lists use a dash.
+MD004:
+  style: dash
+
+# Ordered lists use 1. ordinals.
+MD029:
+  style: ordered
+
+# Allow duplicate sibling headings under different parents (e.g. nested
+# step lists). Top-level uniqueness is still encouraged by structure.
+MD024:
+  siblings_only: true
