@@ -80,15 +80,7 @@ jobs:
       - name: Get version from Cargo.toml
         id: version
         run: |
-          version=$(python3 - <<'PY'
-import tomllib, pathlib
-path = pathlib.Path('Cargo.toml')
-if not path.exists():
-    raise SystemExit('Cargo.toml not found')
-data = tomllib.loads(path.read_text())
-print(data['package']['version'])
-PY
-)
+          version=$(python3 -c "import tomllib, pathlib; p=pathlib.Path('Cargo.toml'); print(tomllib.loads(p.read_text())['package']['version'])")
           echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Create tag from PR version
