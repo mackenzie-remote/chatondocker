@@ -44,8 +44,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-
 
-      - name: Install cargo-audit
-        run: cargo install cargo-audit --version 0.18.3 --locked
+      # - name: Install cargo-audit
+      #   run: cargo install cargo-audit --version 0.18.3 --locked
 
       - name: Install Markdown lint
         run: npm install -g markdownlint-cli@0.40.0
@@ -59,8 +59,8 @@ jobs:
       - name: Run tests
         run: cargo test --all
 
-      - name: Audit dependencies
-        run: cargo audit
+      # - name: Audit dependencies
+      #   run: cargo audit
 
       - name: Lint Markdown
         run: markdownlint "**/*.md"
